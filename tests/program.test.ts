@@ -29,7 +29,7 @@ describe('program', () => {
     p = r(p, RUN) //?
     expect(p.machine.registers.eip).toBe(0)
 
-    // 1) mov eax, 0xbeef
+    // 0) mov eax, 0xbeef
     p = r(p, RUN) //?
     expect(p.machine.registers.eax).toBe(0xbeef)
     expect(p.machine.registers.eip).toBe(1)
