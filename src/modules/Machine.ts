@@ -88,8 +88,8 @@ sm = interpret(sm, 'pop ecx') //?
 sm = interpret(sm, 'xor ecx, esp') //?
 sm = interpret(sm, 'jmp ecx') //?
 
-const runLines = (lines: string, m: State = Machine()): State =>
-  lines.split('\n').reduce((s: State, line: string) => interpret(s, line), m)
+const runLines = (lines: string, m = Machine()): State =>
+  lines.split('\n').reduce(interpret, m)
 
 runLines(`
   mov eax, 50
