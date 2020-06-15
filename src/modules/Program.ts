@@ -11,6 +11,8 @@ export const Program = (): ProgramState => ({program: [], machine: Machine()})
 
 export type ActionTypes = 'ADD_LINE' | 'EXECUTE' | 'RUN_LINE' | 'RUN'
 
+export const RUN: ProgramAction = {type: 'RUN', payload: {}}
+
 const createReducer = (
   s: ProgramState,
 ): Record<ActionTypes, (args: any) => ProgramState> => ({
@@ -33,12 +35,12 @@ const createReducer = (
   }),
 })
 
-interface Action {
+export interface ProgramAction {
   type: ActionTypes
   payload: any
 }
 
-export function programReducer(state: ProgramState, action: Action) {
+export function programReducer(state: ProgramState, action: ProgramAction) {
   const reducers = createReducer(state)
   const r = reducers[action.type]
   if (r) return r(action.payload)
