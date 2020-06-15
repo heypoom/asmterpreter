@@ -82,3 +82,8 @@ let sm = Machine() //?
 
 sm = interpret(sm, 'mov eax, 0xdead') //?
 sm = interpret(sm, 'xor eax, eax') //?
+sm = interpret(sm, 'mov esp, 5') //?
+sm = interpret(sm, 'push 0xbeef') //?
+sm = interpret(sm, 'pop ecx') //?
+sm = interpret(sm, 'xor ecx, esp') //?
+sm = interpret(sm, 'jmp ecx') //?
