@@ -1,10 +1,12 @@
 import {assocPath} from 'ramda'
 
-const Registers = ['eip', 'esp', 'eax', 'ebx', 'ecx', 'nul'] as const
-const Ops = ['mov', 'xor', 'push', 'pop', 'jmp'] as const
+const _registers = ['eip', 'esp', 'eax', 'ebx', 'ecx', 'nul'] as const
+const _ops = ['mov', 'xor', 'push', 'pop', 'jmp'] as const
 
-type Register = typeof Registers[number]
-type Op = typeof Ops[number]
+type Register = typeof _registers[number]
+type Op = typeof _ops[number]
+
+const registers = _registers as ReadonlyArray<string>
 
 interface State {
   registers: Partial<Record<Register, number>>
@@ -31,30 +33,19 @@ const xor = (s: State, reg: Register, value: number) =>
 
 const Machine = (): State => ({registers: {}, memory: {}})
 
-let s = Machine()
-
-s = mov(s, 'eax', 20) //?
-s = jmp(s, 0x10) //?
-s = mov(s, 'esp', 5) //?
-s = push(s, 0xdead) //?
-s = pop(s, 'ecx') //?
-s = xor(s, 'ecx', get(s, 'ecx')) //?
-
-const REGS = Registers as ReadonlyArray<string>
-
-function toReg(reg: string): Register {
-  if (!REGS.includes(reg)) return 'nul'
+export function toReg(reg: string): Register {
+  if (!registers.includes(reg)) return 'nul'
 
   return reg as Register
 }
 
-function toVal(s: State, str: string) {
-  if (REGS.includes(str)) return get(s, toReg(str))
+export function toVal(s: State, str: string) {
+  if (registers.includes(str)) return get(s, toReg(str))
 
   return Number(str) || 0
 }
 
-function interpret(s: State, code: string): State {
+export function interpret(s: State, code: string): State {
   const [op, a, b] = code
     .trim()
     .replace(',', '')
@@ -78,25 +69,5 @@ function interpret(s: State, code: string): State {
   return s
 }
 
-let sm = Machine() //?
-
-sm = interpret(sm, 'mov eax, 0xdead') //?
-sm = interpret(sm, 'xor eax, eax') //?
-sm = interpret(sm, 'mov esp, 5') //?
-sm = interpret(sm, 'push 0xbeef') //?
-sm = interpret(sm, 'pop ecx') //?
-sm = interpret(sm, 'xor ecx, esp') //?
-sm = interpret(sm, 'jmp ecx') //?
-
-const runLines = (lines: string, m = Machine()): State =>
+export const runLines = (lines: string, m = Machine()): State =>
   lines.split('\n').reduce(interpret, m)
-
-runLines(`
-  mov eax, 50
-  mov ecx, 20
-  xor ecx, eax
-  jmp 20
-  mov esp, 15
-  push 0xdead
-  pop ebx
-`) //?
