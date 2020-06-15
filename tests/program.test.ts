@@ -1,14 +1,14 @@
-import {Program, programReducer, RUN} from '../src/modules/Program'
+import {Program, programReducer, RUN, addLine} from '../src/modules/Program'
 
 const r = programReducer
 
 describe('program', () => {
   it('should be able to run added lines', () => {
     let p = Program()
-    p = r(p, {type: 'ADD_LINE', payload: 'mov eax, 0xbeef'})
-    p = r(p, {type: 'ADD_LINE', payload: 'xor eax, eax'})
-    p = r(p, {type: 'ADD_LINE', payload: 'inc eax'})
-    p = r(p, {type: 'ADD_LINE', payload: 'jmp 0'})
+    p = r(p, addLine('mov eax, 0xbeef'))
+    p = r(p, addLine('xor eax, eax'))
+    p = r(p, addLine('inc eax'))
+    p = r(p, addLine('jmp 0'))
 
     // 0) mov eax, 0xbeef
     p = r(p, RUN) //?

@@ -13,6 +13,11 @@ export type ActionTypes = 'ADD_LINE' | 'EXECUTE' | 'RUN_LINE' | 'RUN'
 
 export const RUN: ProgramAction = {type: 'RUN', payload: {}}
 
+export const addLine = (line: string): ProgramAction => ({
+  type: 'ADD_LINE',
+  payload: line,
+})
+
 const createReducer = (
   s: ProgramState,
 ): Record<ActionTypes, (args: any) => ProgramState> => ({
