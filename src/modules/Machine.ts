@@ -87,3 +87,16 @@ sm = interpret(sm, 'push 0xbeef') //?
 sm = interpret(sm, 'pop ecx') //?
 sm = interpret(sm, 'xor ecx, esp') //?
 sm = interpret(sm, 'jmp ecx') //?
+
+const runLines = (lines: string, m: State = Machine()): State =>
+  lines.split('\n').reduce((s: State, line: string) => interpret(s, line), m)
+
+runLines(`
+  mov eax, 50
+  mov ecx, 20
+  xor ecx, eax
+  jmp 20
+  mov esp, 15
+  push 0xdead
+  pop ebx
+`) //?
