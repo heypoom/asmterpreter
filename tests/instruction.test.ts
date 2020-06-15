@@ -1,5 +1,16 @@
 import {Machine} from '../src/modules/Machine'
-import {mov, xor, get, push, pop, jmp} from '../src/modules/Instructions'
+import {
+  mov,
+  xor,
+  get,
+  push,
+  pop,
+  jmp,
+  add,
+  sub,
+  inc,
+  dec,
+} from '../src/modules/Instructions'
 
 const m = () => Machine()
 
@@ -34,5 +45,23 @@ describe('instructions', () => {
   it('should be able to jump by modifying instruction pointer', () => {
     let s = jmp(m(), 0x20)
     expect(s.registers.eip).toBe(0x20)
+  })
+
+  it('should be able to add and subtract number', () => {
+    let s = mov(m(), 'eax', 0x20)
+    s = add(s, 'eax', 0x50)
+    expect(s.registers.eax).toBe(0x70)
+
+    s = sub(s, 'eax', 0x10)
+    expect(s.registers.eax).toBe(0x60)
+  })
+
+  it('should be able to increment and decrement number', () => {
+    let s = mov(m(), 'eax', 0x5)
+    s = inc(s, 'eax')
+    expect(s.registers.eax).toBe(0x6)
+
+    s = dec(s, 'eax')
+    expect(s.registers.eax).toBe(0x5)
   })
 })

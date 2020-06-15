@@ -1,7 +1,7 @@
-import {State, Op, toReg, toVal, Machine} from './Machine'
-import {mov, pop, push, xor, jmp} from './Instructions'
+import {MachineState, Op, toReg, toVal, Machine} from './Machine'
+import {mov, pop, push, xor, jmp, inc, dec, add, sub} from './Instructions'
 
-export function interpret(s: State, code: string): State {
+export function interpret(s: MachineState, code: string): MachineState {
   const [op, a, b] = code
     .trim()
     .replace(',', '')
@@ -11,12 +11,16 @@ export function interpret(s: State, code: string): State {
   const val = toVal(s, a)
   const srcVal = toVal(s, b)
 
-  const handlers: Record<Op, () => State> = {
+  const handlers: Record<Op, () => MachineState> = {
     mov: () => mov(s, dst, srcVal),
     pop: () => pop(s, dst),
     push: () => push(s, val),
     xor: () => xor(s, dst, srcVal),
     jmp: () => jmp(s, val),
+    inc: () => inc(s, dst),
+    dec: () => dec(s, dst),
+    add: () => add(s, dst, srcVal),
+    sub: () => sub(s, dst, srcVal),
   }
 
   const handle = handlers[op]
@@ -25,5 +29,5 @@ export function interpret(s: State, code: string): State {
   return s
 }
 
-export const runLines = (lines: string, m = Machine()): State =>
+export const runLines = (lines: string, m = Machine()): MachineState =>
   lines.split('\n').reduce(interpret, m)
