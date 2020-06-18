@@ -12,7 +12,7 @@ import {
   dec,
 } from '../src/modules/Instructions'
 
-const m = () => Machine()
+export const m = () => Machine()
 
 describe('instructions', () => {
   it('should be able to move value into a register', () => {

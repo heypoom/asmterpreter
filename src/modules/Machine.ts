@@ -1,4 +1,5 @@
 import {get} from './Instructions'
+import {Flags, EmptyFlags} from './Flags'
 
 const _registers = ['eip', 'esp', 'eax', 'ebx', 'ecx', 'nul'] as const
 
@@ -22,9 +23,14 @@ const registers = _registers as ReadonlyArray<string>
 export interface MachineState {
   registers: Partial<Record<Register, number>>
   memory: Record<number, number>
+  flags: Flags
 }
 
-export const Machine = (): MachineState => ({registers: {}, memory: {}})
+export const Machine = (): MachineState => ({
+  registers: {},
+  memory: {},
+  flags: EmptyFlags,
+})
 
 export function toReg(reg: string): Register {
   if (!registers.includes(reg)) return 'nul'
