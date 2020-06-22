@@ -1,4 +1,5 @@
-import {Machine} from '../src/modules/Machine'
+import {m} from '../src/modules/Machine'
+
 import {
   mov,
   xor,
@@ -11,8 +12,6 @@ import {
   inc,
   dec,
 } from '../src/modules/Instructions'
-
-export const m = () => Machine()
 
 describe('instructions', () => {
   it('should be able to move value into a register', () => {
@@ -31,7 +30,7 @@ describe('instructions', () => {
     let s = mov(m(), 'esp', 0x5)
     s = push(s, 0xbeef)
 
-    expect(s.memory[5]).toBe(0xbeef)
+    expect(s.memory[6]).toBe(0xbeef)
   })
 
   it('should be able to pop value from the stack', () => {

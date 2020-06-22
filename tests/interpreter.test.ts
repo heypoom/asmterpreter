@@ -19,7 +19,6 @@ describe('textual interpreter', () => {
 
   it('should be able to interpret push and pop instruction', () => {
     const s = runLines(`
-      mov esp, 1
       push 0xdead
       pop ebx
     `)

@@ -1,7 +1,5 @@
 import {cmp} from '../src/modules/Instructions'
-import {Machine} from '../src/modules/Machine'
-
-export const m = () => Machine()
+import {m} from '../src/modules/Machine'
 
 describe('comparison instruction', () => {
   it('should be able to compare 2 < 5', () => {

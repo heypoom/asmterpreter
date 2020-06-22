@@ -31,17 +31,25 @@ export const get = (s: MachineState, reg: Register) => s.registers[reg] || 0
 export const memget = (s: MachineState, address: number) =>
   s.memory[address] || 0
 
-export const push = (s: MachineState, value: number) =>
-  memset(s, get(s, 'esp'), value)
+export function push(s: MachineState, value: number) {
+  let ms = inc(s, 'esp')
+  ms = memset(ms, get(ms, 'esp'), value)
 
-export const pop = (s: MachineState, reg: Register) =>
-  mov(s, reg, memget(s, get(s, 'esp')))
+  return ms
+}
+
+export function pop(s: MachineState, reg: Register) {
+  let ms = mov(s, reg, memget(s, get(s, 'esp')))
+  ms = dec(ms, 'esp')
+
+  return ms
+}
 
 export const xor = (s: MachineState, reg: Register, value: number) =>
   mov(s, reg, get(s, reg) ^ value)
 
 export const add = (s: MachineState, reg: Register, value: number) =>
-  mov(s, reg, get(s, reg) + value)
+  mov(s, reg, Math.max(get(s, reg) + value, 0))
 
 export const sub = (s: MachineState, reg: Register, value: number) =>
   add(s, reg, -value)
