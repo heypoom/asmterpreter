@@ -84,14 +84,11 @@ describe('simplify module', () => {
     `
 
     let output = `
-      compare(b, a)
-      if (A > B) goto(0x8)
+      if (b > a) goto(0x8)
 
-      compare(a, c)
-      if (A <= B) goto(0x8)
+      if (a <= c) goto(0x8)
 
-      compare(a, c)
-      if (A != B) goto(0x8)
+      if (a != c) goto(0x8)
     `
 
     expect(simplify(input)).toBe(trim(output))
