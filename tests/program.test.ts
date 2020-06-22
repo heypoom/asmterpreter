@@ -14,26 +14,26 @@ describe('program', () => {
     p = add(p, code)
 
     // 0) mov eax, 0xbeef
-    p = step(p) //?
+    p = step(p)
     expect(p.machine.registers.eax).toBe(0xbeef)
     expect(p.machine.registers.eip).toBe(1)
 
     // 1) xor eax, eax
-    p = step(p) //?
+    p = step(p)
     expect(p.machine.registers.eax).toBe(0)
     expect(p.machine.registers.eip).toBe(2)
 
     // 2) inc eax
-    p = step(p) //?
+    p = step(p)
     expect(p.machine.registers.eax).toBe(1)
     expect(p.machine.registers.eip).toBe(3)
 
     // 3) jmp 0
-    p = step(p) //?
+    p = step(p)
     expect(p.machine.registers.eip).toBe(0)
 
     // 0) mov eax, 0xbeef
-    p = step(p) //?
+    p = step(p)
     expect(p.machine.registers.eax).toBe(0xbeef)
     expect(p.machine.registers.eip).toBe(1)
   })

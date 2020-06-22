@@ -14,15 +14,17 @@ describe('comparison program', () => {
       ja 0x8
     `)
 
-    s.registers //?
+    expect(s.registers.eax).toBe(20)
+    expect(s.registers.ebx).toBe(55)
+    expect(s.registers.eip).toBe(0x8)
 
     let code = `
-    cmp eax, ebx
-    jl 0x5
-  `
+      cmp eax, ebx
+      jl 0x5
+    `
 
     s = runLines(code, s)
-    s.registers //?
+    expect(s.registers.eip).toBe(0x5)
   })
 
   it('should be able to run comparison program in line-by-line mode', () => {
@@ -37,20 +39,22 @@ describe('comparison program', () => {
     `
 
     p = add(p, code)
-    p = step(p)
+
+    p = step(p) // mov eax, 20
     expect(p.machine.registers.eax).toBe(20)
 
-    p = step(p)
+    p = step(p) // mov ebx, 40
     expect(p.machine.registers.ebx).toBe(40)
 
-    p = step(p)
+    p = step(p) // add ebx, eax
     expect(p.machine.registers.ebx).toBe(60)
 
-    p = step(p)
+    p = step(p) // sub ebx, 5
     expect(p.machine.registers.eax).toBe(20)
     expect(p.machine.registers.ebx).toBe(55)
 
     p = step(p) // 20 < 55
-    p.machine.registers //?
+    expect(p.machine.flags.carry).toBe(false)
+    expect(p.machine.flags.zero).toBe(false)
   })
 })
