@@ -1,7 +1,8 @@
 import {get} from './Instructions'
 import {Flags, EmptyFlags} from './Flags'
+import {Effect} from './Effect'
 
-const _registers = ['eip', 'esp', 'eax', 'ebx', 'ecx', 'nul'] as const
+const _registers = ['eip', 'esp', 'eax', 'ebx', 'ecx', 'edx', 'nul'] as const
 
 const _ops = [
   'mov',
@@ -11,8 +12,19 @@ const _ops = [
   'jmp',
   'add',
   'sub',
+  'mul',
+  'div',
   'inc',
   'dec',
+  'cmp',
+  'jl',
+  'je',
+  'jle',
+  'jne',
+  'ja',
+  'jae',
+  'jz',
+  'int',
 ] as const
 
 export type Register = typeof _registers[number]
@@ -24,12 +36,16 @@ export interface MachineState {
   registers: Partial<Record<Register, number>>
   memory: Record<number, number>
   flags: Flags
+  data: Record<number, string>
+  effects: Effect[]
 }
 
 export const Machine = (): MachineState => ({
   registers: {},
   memory: {},
   flags: EmptyFlags,
+  data: {},
+  effects: [],
 })
 
 export function toReg(reg: string): Register {
@@ -43,3 +59,5 @@ export function toVal(s: MachineState, str: string) {
 
   return Number(str) || 0
 }
+
+export const m = Machine

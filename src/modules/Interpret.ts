@@ -1,5 +1,22 @@
 import {MachineState, Op, toReg, toVal, Machine} from './Machine'
-import {mov, pop, push, xor, jmp, inc, dec, add, sub} from './Instructions'
+
+import {
+  mov,
+  pop,
+  push,
+  xor,
+  jmp,
+  inc,
+  dec,
+  add,
+  sub,
+  cmp,
+  mul,
+  div,
+} from './Instructions'
+
+import {jne, je, jl, jle, ja, jae, jz} from './Comparison'
+import {int} from './Interrupt'
 
 export function interpret(s: MachineState, code: string): MachineState {
   const [op, a, b] = code
@@ -8,6 +25,7 @@ export function interpret(s: MachineState, code: string): MachineState {
     .split(' ') as [Op, string, string]
 
   const dst = toReg(a)
+  const dstVal = toVal(s, a)
   const val = toVal(s, a)
   const srcVal = toVal(s, b)
 
@@ -21,6 +39,17 @@ export function interpret(s: MachineState, code: string): MachineState {
     dec: () => dec(s, dst),
     add: () => add(s, dst, srcVal),
     sub: () => sub(s, dst, srcVal),
+    mul: () => mul(s, dst, srcVal),
+    div: () => div(s, dst, srcVal),
+    cmp: () => cmp(s, dstVal, srcVal),
+    jne: () => jne(s, dstVal),
+    je: () => je(s, dstVal),
+    jl: () => jl(s, dstVal),
+    jle: () => jle(s, dstVal),
+    ja: () => ja(s, dstVal),
+    jae: () => jae(s, dstVal),
+    jz: () => jz(s, dstVal),
+    int: () => int(s, dstVal),
   }
 
   const handle = handlers[op]

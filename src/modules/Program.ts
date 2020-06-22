@@ -52,3 +52,27 @@ export function programReducer(state: ProgramState, action: ProgramAction) {
 
   return state
 }
+
+export const run = (p: ProgramState) => r(p, RUN)
+export const r = programReducer
+
+export function step(p: ProgramState, count: number = 1): ProgramState {
+  for (let i = 0; i < count; i++) p = run(p)
+
+  return p
+}
+
+export const stepOver = (p: ProgramState) =>
+  step(p, p.program.length - (p.machine.registers.eip || 0))
+
+const toLines = (code: string) =>
+  code
+    .trim()
+    .split('\n')
+    .map(x => x.trim())
+
+export const addSingleLine = (p: ProgramState, line: string) =>
+  r(p, addLine(line))
+
+export const add = (p: ProgramState, lines: string) =>
+  toLines(lines).reduce(addSingleLine, p)
