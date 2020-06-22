@@ -24,8 +24,10 @@ const Panel = styled.div`
 const Code = styled.code`
   font-family: 'JetBrains Mono', 'FiraCode Nerd Font', 'FiraCode', monospace;
   font-size: 20px;
-  line-height: 1.4;
+  line-height: 1.5;
 `
+
+const focusColor = '#84ffff'
 
 const Input = styled.input`
   width: 100%;
@@ -43,6 +45,17 @@ const Input = styled.input`
   &::placeholder {
     color: white;
   }
+
+  &:hover,
+  &:active,
+  &:focus {
+    color: ${focusColor};
+    border: 1px solid ${focusColor};
+
+    &::placeholder {
+      color: ${focusColor};
+    }
+  }
 `
 
 const Pre = styled.pre`
@@ -58,8 +71,11 @@ const Button = styled.button`
   border-radius: 8px;
   padding: 10px 15px;
   margin-top: 20px;
+  outline: none;
 
-  &:hover {
+  &:hover,
+  &:active,
+  &:focus {
     cursor: pointer;
     color: #121212;
     background: #eee;
