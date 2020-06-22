@@ -203,3 +203,6 @@ typings/
 dist/
 .cache/
 .idea/
+
+# Local Netlify folder
+.netlify
