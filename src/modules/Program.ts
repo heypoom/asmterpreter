@@ -28,12 +28,13 @@ const createReducer = (
 
   ASSEMBLE: (lines: string) => ({
     ...s,
-    program: [...s.program, assemble(lines)],
+    program: [...s.program, ...assemble(lines).split('\n')],
   }),
 
   RUN: () => {
     let ip = get(s.machine, 'eip')
     let line = s.program[ip]
+    if (!line) return s
 
     let m = interpret(s.machine, line)
     if (!line.startsWith('jmp')) m = inc(m, 'eip')
