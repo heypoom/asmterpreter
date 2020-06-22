@@ -8,15 +8,23 @@ const Container = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  padding: 1em;
+  padding: 1em 2.5em;
   max-width: 1000px;
   margin: 0 auto;
+  min-height: 100vh;
+`
+
+const Panel = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
 `
 
 const Code = styled.code`
   font-family: 'JetBrains Mono', 'FiraCode Nerd Font', 'FiraCode', monospace;
   font-size: 20px;
-  line-height: 1.3;
+  line-height: 1.4;
 `
 
 const Input = styled.input`
@@ -24,12 +32,32 @@ const Input = styled.input`
   height: 100%;
   font-size: 20px;
   font-family: 'JetBrains Mono', 'FiraCode Nerd Font', 'FiraCode', monospace;
-  border: 1px solid #eee;
+  border: 1px solid #bbb;
+  border-radius: 8px;
+  padding: 10px 15px;
+  margin: 0.4em 0;
+  background: transparent;
   outline: none;
+  color: white;
+
+  &::placeholder {
+    color: white;
+  }
 `
 
 const Pre = styled.pre`
   width: 100%;
+`
+
+const Button = styled.button`
+  font-size: 20px;
+  font-family: 'JetBrains Mono', 'FiraCode Nerd Font', 'FiraCode', monospace;
+  color: white;
+  background: transparent;
+  border: 1px solid #bbb;
+  border-radius: 8px;
+  padding: 10px 15px;
+  margin-top: 20px;
 `
 
 export function App() {
@@ -57,7 +85,7 @@ export function App() {
         <Code>{JSON.stringify(state, null, 2)}</Code>
       </Pre>
 
-      <div>
+      <Panel>
         <Input
           placeholder="Assembly Code"
           value={code}
@@ -72,8 +100,8 @@ export function App() {
           onKeyPress={e => e.key === 'Enter' && runIR()}
         />
 
-        <button onClick={step}>Step</button>
-      </div>
+        <Button onClick={step}>Step</Button>
+      </Panel>
     </Container>
   )
 }
