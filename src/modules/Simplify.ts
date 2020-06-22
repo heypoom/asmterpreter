@@ -1,16 +1,15 @@
 import {Op, Register} from './Machine'
 
-const simpleOpMap: Record<Op, string> = {
-  mov: '$a = $b',
+export const simpleOpMap: Record<Op, string> = {
   push: 'stack.push($a)',
   pop: '$a = stack.pop()',
+  mov: '$a = $b',
   add: '$a += $b',
   sub: '$a -= $b',
   mul: '$a *= $b',
   div: '$a /= $b',
   xor: '$a ^= $b',
   int: 'interrupt($a)',
-  jmp: 'goto($a)',
   inc: '$a++',
   dec: '$a--',
   cmp: 'compare($a, $b)',
@@ -21,11 +20,20 @@ const simpleOpMap: Record<Op, string> = {
   jae: 'if ($a >= $b) goto($c)',
   jl: 'if ($a < $b) goto($c)',
   jz: 'if (isZero($a)) goto($c)',
+  jmp: 'goto($a)',
 }
 
-const compareJumpOps: Op[] = ['je', 'jle', 'jne', 'ja', 'jae', 'jl', 'jz']
+export const compareJumpOps: Op[] = [
+  'je',
+  'jle',
+  'jne',
+  'ja',
+  'jae',
+  'jl',
+  'jz',
+]
 
-const simpleRegMap: Record<Register, string> = {
+export const simpleRegMap: Record<Register, string> = {
   eip: 'IP',
   eax: 'a',
   ebx: 'b',
@@ -44,7 +52,7 @@ export function simplifyArg(arg: string) {
   return arg
 }
 
-interface SimplifyState {
+export interface SimplifyState {
   cmpA: string
   cmpB: string
 }
@@ -55,7 +63,7 @@ export const replaceArg = (code: string, a = '', b = '', c = '') =>
     .replace(/\$b/g, simplifyArg(b))
     .replace(/\$c/g, simplifyArg(c))
 
-const createSimplifyState = (): SimplifyState => ({cmpA: '', cmpB: ''})
+export const createSimplifyState = (): SimplifyState => ({cmpA: '', cmpB: ''})
 
 export function simplifyLine(
   ins: string,

@@ -1,11 +1,5 @@
+import {trim} from '../src/modules/Utils'
 import {simplify} from '../src/modules/Simplify'
-
-const trim = (str: string) =>
-  str
-    .trim()
-    .split('\n')
-    .map(x => x.trim())
-    .join('\n')
 
 describe('simplify module', () => {
   it('should simplify mov instructions', () => {
