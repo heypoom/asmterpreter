@@ -1,5 +1,5 @@
 import {MachineState, Machine} from './Machine'
-import {interpret} from './Interpret'
+import {interpret, runLines} from './Interpret'
 import {get, inc} from './Instructions'
 import {toLines} from './Utils'
 import {assemble} from './Assemble'
@@ -11,7 +11,7 @@ export type ProgramState = {
 
 export const Program = (): ProgramState => ({program: [], machine: Machine()})
 
-export type ActionTypes = 'ADD' | 'ASSEMBLE' | 'ADD_LINE' | 'RUN'
+export type ActionTypes = 'ADD' | 'ASSEMBLE' | 'ADD_LINE' | 'RUN' | 'EVAL'
 
 export const RUN: ProgramAction = {type: 'RUN', payload: {}}
 
@@ -41,6 +41,11 @@ const createReducer = (
 
     return {...s, machine: m}
   },
+
+  EVAL: (code: string) => ({
+    ...s,
+    machine: runLines(code, s.machine),
+  }),
 })
 
 export interface ProgramAction {

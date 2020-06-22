@@ -32,6 +32,7 @@ const Code = styled.code<CodeProps>`
   font-size: 20px;
   line-height: 1.5;
 
+  cursor: pointer;
   color: ${props => (props.hl ? focusColor : '#eee')};
   font-weight: ${props => (props.hl ? 'bold' : 'normal')};
 `
@@ -108,6 +109,9 @@ export function App() {
     setIRCode('')
   }
 
+  const jump = (line: number) =>
+    dispatch({type: 'EVAL', payload: `jmp ${line}`})
+
   const ip = state.machine.registers.eip || 0
 
   return (
@@ -115,8 +119,10 @@ export function App() {
       <Panel>
         <Pre>
           {state.program.map((x, i) => (
-            <div>
-              <Code hl={i === ip}>{x}</Code>
+            <div onClick={() => jump(i)}>
+              <Code hl={i === ip}>
+                <small>{i})</small> {x}
+              </Code>
             </div>
           ))}
         </Pre>
