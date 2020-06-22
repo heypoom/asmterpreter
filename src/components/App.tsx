@@ -58,6 +58,12 @@ const Button = styled.button`
   border-radius: 8px;
   padding: 10px 15px;
   margin-top: 20px;
+
+  &:hover {
+    cursor: pointer;
+    color: #121212;
+    background: #eee;
+  }
 `
 
 export function App() {
