@@ -11,13 +11,25 @@ export type ProgramState = {
 
 export const Program = (): ProgramState => ({program: [], machine: Machine()})
 
-export type ActionTypes = 'ADD' | 'ASSEMBLE' | 'ADD_LINE' | 'RUN' | 'EVAL'
+export type ActionTypes =
+  | 'ADD'
+  | 'ASSEMBLE'
+  | 'ADD_LINE'
+  | 'RUN'
+  | 'EVAL'
+  | 'RESET'
 
-export const RUN: ProgramAction = {type: 'RUN', payload: {}}
+export const RUN: ProgramAction = {type: 'RUN'}
+export const RESET: ProgramAction = {type: 'RESET'}
 
 export const addLine = (line: string): ProgramAction => ({
   type: 'ADD_LINE',
   payload: line,
+})
+
+export const evaluate = (code: string): ProgramAction => ({
+  type: 'EVAL',
+  payload: code,
 })
 
 const createReducer = (
@@ -46,11 +58,13 @@ const createReducer = (
     ...s,
     machine: runLines(code, s.machine),
   }),
+
+  RESET: () => Program(),
 })
 
 export interface ProgramAction {
   type: ActionTypes
-  payload: any
+  payload?: any
 }
 
 export function programReducer(state: ProgramState, action: ProgramAction) {

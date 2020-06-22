@@ -1,7 +1,7 @@
 import React, {useReducer, useState} from 'react'
 import styled from '@emotion/styled'
 
-import {programReducer, Program} from '../modules/Program'
+import {programReducer, Program, evaluate, RUN, RESET} from '../modules/Program'
 
 const Container = styled.div`
   display: flex;
@@ -22,7 +22,7 @@ const Panel = styled.div`
 `
 
 interface CodeProps {
-  hl: boolean
+  hl?: boolean
 }
 
 const focusColor = '#84ffff'
@@ -78,7 +78,7 @@ const Button = styled.button`
   border: 1px solid #bbb;
   border-radius: 8px;
   padding: 10px 15px;
-  margin-top: 20px;
+  margin: 20px 10px;
   outline: none;
 
   &:hover,
@@ -95,7 +95,8 @@ export function App() {
   const [code, setCode] = useState('')
   const [irCode, setIRCode] = useState('')
 
-  const step = () => dispatch({type: 'RUN', payload: {}})
+  const step = () => dispatch(RUN)
+  const reset = () => dispatch(RESET)
 
   function run() {
     dispatch({type: 'ADD', payload: code})
@@ -109,8 +110,7 @@ export function App() {
     setIRCode('')
   }
 
-  const jump = (line: number) =>
-    dispatch({type: 'EVAL', payload: `jmp ${line}`})
+  const jump = (line: number) => dispatch(evaluate(`jmp ${line}`))
 
   const ip = state.machine.registers.eip || 0
 
@@ -147,7 +147,10 @@ export function App() {
           onKeyPress={e => e.key === 'Enter' && runIR()}
         />
 
-        <Button onClick={step}>Step</Button>
+        <div>
+          <Button onClick={step}>Step</Button>
+          <Button onClick={reset}>Reset</Button>
+        </div>
       </Panel>
     </Container>
   )
