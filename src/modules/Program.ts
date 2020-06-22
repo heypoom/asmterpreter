@@ -1,6 +1,7 @@
 import {MachineState, Machine} from './Machine'
 import {interpret} from './Interpret'
 import {get, inc} from './Instructions'
+import {toLines} from './Utils'
 
 export type ProgramState = {
   program: string[]
@@ -64,12 +65,6 @@ export function step(p: ProgramState, count: number = 1): ProgramState {
 
 export const stepOver = (p: ProgramState) =>
   step(p, p.program.length - (p.machine.registers.eip || 0))
-
-const toLines = (code: string) =>
-  code
-    .trim()
-    .split('\n')
-    .map(x => x.trim())
 
 export const addSingleLine = (p: ProgramState, line: string) =>
   r(p, addLine(line))

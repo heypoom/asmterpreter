@@ -2,6 +2,7 @@ import escapeRegex from 'lodash.escaperegexp'
 
 import {simpleOpMap, compareJumpOps, simpleRegMap} from './Simplify'
 import {Op, Register} from './Machine'
+import {toLines} from './Utils'
 
 type OpRegexMap = Partial<Record<Op, RegExp>>
 
@@ -54,8 +55,6 @@ export function assembleLine(code: string) {
 }
 
 export const assemble = (lines: string) =>
-  lines
-    .trim()
-    .split('\n')
+  toLines(lines)
     .map(assembleLine)
     .join('\n')

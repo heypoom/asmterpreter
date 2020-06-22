@@ -1,4 +1,5 @@
 import {Op, Register} from './Machine'
+import {parseLine, toLines} from './Utils'
 
 export const simpleOpMap: Record<Op, string> = {
   push: 'stack.push($a)',
@@ -72,10 +73,7 @@ export function simplifyLine(
   if (!ins) return ['', ss]
   if (ins.startsWith('//') || ins.startsWith(';')) return [ins, ss]
 
-  const [opcode, a, b] = ins
-    .trim()
-    .replace(',', '')
-    .split(' ')
+  const [opcode, a, b] = parseLine(ins)
 
   const op = opcode as Op
 
@@ -94,7 +92,7 @@ export function simplifyLine(
 }
 
 export function simplify(code: string) {
-  const lines = code.trim().split('\n')
+  const lines = toLines(code)
   const simplified = []
 
   let ss = createSimplifyState()

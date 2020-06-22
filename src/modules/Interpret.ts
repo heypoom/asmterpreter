@@ -17,12 +17,10 @@ import {
 
 import {jne, je, jl, jle, ja, jae, jz} from './Comparison'
 import {int} from './Interrupt'
+import {parseLine} from './Utils'
 
 export function interpret(s: MachineState, code: string): MachineState {
-  const [op, a, b] = code
-    .trim()
-    .replace(',', '')
-    .split(' ') as [Op, string, string]
+  const [op, a, b] = parseLine(code)
 
   const dst = toReg(a)
   const dstVal = toVal(s, a)
