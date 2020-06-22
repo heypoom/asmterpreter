@@ -14,13 +14,13 @@ const simpleOpMap: Record<Op, string> = {
   inc: '$a++',
   dec: '$a--',
   cmp: 'compare($a, $b)',
-  je: 'if (a == b) goto($a)',
-  jle: 'if (a <= b) goto($a)',
-  jne: 'if (a != b) goto($a)',
-  ja: 'if (a > b) goto($a)',
-  jae: 'if (a >= b) goto($a)',
-  jl: 'if (a < b) goto($a)',
-  jz: 'if (isZero(a)) goto($a)',
+  je: 'if (A == B) goto($a)',
+  jle: 'if (A <= B) goto($a)',
+  jne: 'if (A != B) goto($a)',
+  ja: 'if (A > B) goto($a)',
+  jae: 'if (A >= B) goto($a)',
+  jl: 'if (A < B) goto($a)',
+  jz: 'if (isZero(A)) goto($a)',
 }
 
 const simpleRegMap: Record<Register, string> = {

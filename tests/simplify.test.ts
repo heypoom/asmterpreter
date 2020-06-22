@@ -16,7 +16,7 @@ describe('simplify module', () => {
   })
 
   it('should simplify polynomial program', () => {
-    let code = `
+    let input = `
       mov eax, 2
 
       int 0x80
@@ -68,6 +68,32 @@ describe('simplify module', () => {
       d += c
     `
 
-    expect(simplify(code)).toBe(trim(output))
+    expect(simplify(input)).toBe(trim(output))
+  })
+
+  it('should be able to simplify comparison program', () => {
+    let input = `
+      cmp ebx, eax
+      ja 0x8
+
+      cmp eax, ecx
+      jle 0x8
+
+      cmp eax, ecx
+      jne 0x8
+    `
+
+    let output = `
+      compare(b, a)
+      if (A > B) goto(0x8)
+
+      compare(a, c)
+      if (A <= B) goto(0x8)
+
+      compare(a, c)
+      if (A != B) goto(0x8)
+    `
+
+    expect(simplify(input)).toBe(trim(output))
   })
 })
