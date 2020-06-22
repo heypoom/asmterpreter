@@ -2,6 +2,7 @@ import {MachineState, Machine} from './Machine'
 import {interpret} from './Interpret'
 import {get, inc} from './Instructions'
 import {toLines} from './Utils'
+import {assemble} from './Assemble'
 
 export type ProgramState = {
   program: string[]
@@ -10,7 +11,7 @@ export type ProgramState = {
 
 export const Program = (): ProgramState => ({program: [], machine: Machine()})
 
-export type ActionTypes = 'ADD_LINE' | 'EXECUTE' | 'RUN_LINE' | 'RUN'
+export type ActionTypes = 'ADD' | 'ASSEMBLE' | 'ADD_LINE' | 'RUN'
 
 export const RUN: ProgramAction = {type: 'RUN', payload: {}}
 
@@ -22,8 +23,13 @@ export const addLine = (line: string): ProgramAction => ({
 const createReducer = (
   s: ProgramState,
 ): Record<ActionTypes, (args: any) => ProgramState> => ({
+  ADD: (lines: string) => add(s, lines),
   ADD_LINE: (p: string) => ({...s, program: [...s.program, p]}),
-  EXECUTE: (p: string) => ({...s, machine: interpret(s.machine, p)}),
+
+  ASSEMBLE: (lines: string) => ({
+    ...s,
+    program: [...s.program, assemble(lines)],
+  }),
 
   RUN: () => {
     let ip = get(s.machine, 'eip')
@@ -34,11 +40,6 @@ const createReducer = (
 
     return {...s, machine: m}
   },
-
-  RUN_LINE: (p: number = 0) => ({
-    ...s,
-    machine: interpret(s.machine, s.program[p]),
-  }),
 })
 
 export interface ProgramAction {
