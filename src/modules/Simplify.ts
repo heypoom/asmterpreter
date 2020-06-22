@@ -55,9 +55,11 @@ export const replaceArg = (code: string, a = '', b = '', c = '') =>
     .replace(/\$b/g, simplifyArg(b))
     .replace(/\$c/g, simplifyArg(c))
 
+const createSimplifyState = (): SimplifyState => ({cmpA: '', cmpB: ''})
+
 export function simplifyLine(
   ins: string,
-  ss: SimplifyState,
+  ss = createSimplifyState(),
 ): [string, SimplifyState] {
   if (!ins) return ['', ss]
   if (ins.startsWith('//') || ins.startsWith(';')) return [ins, ss]
@@ -87,7 +89,7 @@ export function simplify(code: string) {
   const lines = code.trim().split('\n')
   const simplified = []
 
-  let ss: SimplifyState = {cmpA: '', cmpB: ''}
+  let ss = createSimplifyState()
 
   for (let line of lines) {
     const [result, nextState] = simplifyLine(line, ss)
