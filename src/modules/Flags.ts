@@ -1,13 +1,13 @@
 const flags = [
   'carry',
-  'parity',
-  'adjust',
   'zero',
-  'sign',
-  'trap',
-  'enableInterrupt',
-  'direction',
-  'overflow',
+  // 'parity',
+  // 'adjust',
+  // 'sign',
+  // 'trap',
+  // 'enableInterrupt',
+  // 'direction',
+  // 'overflow',
 ] as const
 
 export type Flags = Record<typeof flags[number], boolean>
