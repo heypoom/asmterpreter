@@ -21,13 +21,20 @@ const Panel = styled.div`
   justify-content: flex-start;
 `
 
-const Code = styled.code`
+interface CodeProps {
+  hl: boolean
+}
+
+const focusColor = '#84ffff'
+
+const Code = styled.code<CodeProps>`
   font-family: 'JetBrains Mono', 'FiraCode Nerd Font', 'FiraCode', monospace;
   font-size: 20px;
   line-height: 1.5;
-`
 
-const focusColor = '#84ffff'
+  color: ${props => (props.hl ? focusColor : '#eee')};
+  font-weight: ${props => (props.hl ? 'bold' : 'normal')};
+`
 
 const Input = styled.input`
   width: 100%;
@@ -101,11 +108,23 @@ export function App() {
     setIRCode('')
   }
 
+  const ip = state.machine.registers.eip || 0
+
   return (
     <Container>
-      <Pre>
-        <Code>{JSON.stringify(state, null, 2)}</Code>
-      </Pre>
+      <Panel>
+        <Pre>
+          {state.program.map((x, i) => (
+            <div>
+              <Code hl={i === ip}>{x}</Code>
+            </div>
+          ))}
+        </Pre>
+
+        <Pre>
+          <Code>{JSON.stringify(state.machine, null, 2)}</Code>
+        </Pre>
+      </Panel>
 
       <Panel>
         <Input
